@@ -52,7 +52,11 @@ public class Main {
         
         PrintWriter writer = new PrintWriter(resultFile, "UTF-8");
         
+        int numberOfTest = Integer.parseInt(br.readLine().toString());
         while ((actualText = br.readLine()) != null) {
+            if(numberOfTest == 0)
+                break;
+            numberOfTest--;
             String[] words = actualText.split(" ");
             
             List<List<String>> wordPOS = getWordPOS(actualText);
@@ -60,7 +64,7 @@ public class Main {
             List<String> featureLeftToThis = new ArrayList<>();
             List<String> featureRightToThis = new ArrayList<>();
             
-            System.out.println("wordPOS size " + wordPOS.size());
+            //System.out.println("wordPOS size " + wordPOS.size());
             
             for(int i = 0; i < wordPOS.get(0).size(); i++)
             {
@@ -79,17 +83,17 @@ public class Main {
             }
             
             
-            System.out.println("size or num of **** : " + featureRightToThis.size() + " :: " + featureLeftToThis.size());
+            //System.out.println("size or num of **** : " + featureRightToThis.size() + " :: " + featureLeftToThis.size());
             int starIndex = 0;
             
             for(int i = 0; i < words.length; i++)
             {
-                System.out.println("Word is : " + words[i]);
+                //System.out.println("Word is : " + words[i]);
                 if((i != words.length - 1) && words[i].equals("****"))
                 {
                     if(words[i+1].startsWith("****"))
                     {
-                        System.out.println("2 cont");
+                        //System.out.println("2 cont");
                         if(i == 0)
                             writer.print("You're your");
                         else
@@ -111,7 +115,7 @@ public class Main {
                 
                 if(words[i].contains("****"))
                 {
-                    System.out.println("Found **** " + starIndex);
+                    //System.out.println("Found **** " + starIndex);
                     
                     String leftChar = "", rightChar = "";
                     
