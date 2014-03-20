@@ -53,20 +53,49 @@ public class Main {
         while ((actualText = br.readLine()) != null) {
             String[] words = actualText.split(" ");
             
+            List<List<String>> wordPOS = getWordPOS(actualText);
+            
+            List<String> featureLeftToThis = new ArrayList<>();
+            List<String> featureRightToThis = new ArrayList<>();
+            
+            System.out.println("wordPOS size " + wordPOS.size());
+            
+            for(int i = 0; i < wordPOS.get(0).size(); i++)
+            {
+                if(wordPOS.get(0).get(i).equals("\\*\\*\\*\\*"))
+                {
+                    if(i != 0)
+                        featureLeftToThis.add(wordPOS.get(1).get(i-1));
+                    else
+                        featureLeftToThis.add("O");
+                    
+                    if(i != wordPOS.size()-1)
+                        featureRightToThis.add(wordPOS.get(1).get(i+1));
+                    else
+                        featureRightToThis.add("O");
+                }
+            }
+            
+            
+            System.out.println("size or num of **** : " + featureRightToThis.size() + " :: " + featureLeftToThis.size());
+            int starIndex = 0;
+            
             for(int i = 0; i < words.length; i++)
             {
                 System.out.println("Word is : " + words[i]);
                 if((i != words.length - 1) && words[i].equals("****"))
                 {
-                    System.out.println("2 cont");
                     if(words[i+1].startsWith("****"))
                     {
+                        System.out.println("2 cont");
                         if(i == 0)
                             writer.print("You're your");
                         else
                             writer.print("you're your");
                         
-                        List<List<String>> wordPos = getWordPOS(words[i+1]);
+                        starIndex += 2;
+                        
+                        List<List<String>> wordPos = getWordPOS(words[i]);
                         
                         if(wordPos.get(0).size() != 1)
                             writer.print(wordPos.get(0).get(1));
@@ -78,77 +107,57 @@ public class Main {
                     }
                 }
                 
-                if(words[i].startsWith("****"))
+                if(words[i].contains("****"))
                 {
-                    System.out.println("Found ****");
+                    System.out.println("Found **** " + starIndex);
                     
-                    String leftFeature = "O";
-                    String rightFeature = "O";
+                    String leftChar = "", rightChar = "";
                     
-                    String leftString, rightString;
+                    /** for getting other stray chars **/
+                    List<List<String>> wordPos = getWordPOS(words[i]);
                     
-                    if(i != 0)
+                    if(wordPos.get(0).size() == 3)
                     {
-                        leftString = words[i-1];
-                        List<List<String>> wordPos = getWordPOS(leftString);
-                        int index = wordPos.get(1).size() - 1;
-                        leftFeature = wordPos.get(1).get(index);
+                        leftChar = wordPos.get(0).get(0);
+                        rightChar = wordPos.get(0).get(2);
+                    }
+                    else if(wordPos.get(0).size() == 2)
+                    {
+                        if(wordPos.get(0).get(0).equals("\\*\\*\\*\\*"))
+                            rightChar = wordPos.get(0).get(1);
+                        else
+                            leftChar = wordPos.get(0).get(0);
                     }
                     
-                    rightString = words[i];
-                    
-                    if(i != words.length - 1)
-                    {
-                        rightString += words[i+1];
-                    }
-                    
-                    List<List<String>> wordPos = getWordPOS(rightString);
-                    
-                    if(wordPos.get(1).size() != 1)
-                    {
-                        rightFeature = wordPos.get(1).get(1);
-                    }
+                    /** get leftFeature and rightFeature and predict likelyPOS**/
+                    String leftFeature = featureLeftToThis.get(starIndex);
+                    String rightFeature = featureRightToThis.get(starIndex);
+                    starIndex++;
                     
                     String likelyPOS = Rb.getResult(leftFeature, rightFeature);
+                    
+                    /***********************************************/
                     if(likelyPOS.equals("PRP$"))
                     {
-                        if(words[i].length() == 4)
-                        {
-                            if(i == 0)
-                                writer.write("Your ");
-                            else
-                                writer.write("your ");
-                        }
+                        writer.write(leftChar);
+                        
+                        if(i == 0)
+                            writer.write("Your");
                         else
-                        {
-                            if(i == 0)
-                                writer.write("Your");
-                            else
-                                writer.write("your");
-                            
-                            if(wordPos.get(1).size() != 1)
-                                writer.write(wordPos.get(1).get(1)+ " ");
-                        }                           
+                            writer.write("your");
+                        
+                        writer.write(rightChar + " ");
                     }
                     else
                     {
-                        if(words[i].length() == 4)
-                        {
-                            if(i == 0)
-                                writer.write("You're ");
-                            else
-                                writer.write("you're ");
-                        }
+                        writer.write(leftChar);
+                        
+                        if(i == 0)
+                            writer.write("You're");
                         else
-                        {
-                            if(i == 0)
-                                writer.write("You're");
-                            else
-                                writer.write("you're");
-                            
-                            if(wordPos.get(1).size() != 1)
-                                writer.write(wordPos.get(1).get(1)+ " ");
-                        }
+                            writer.write("you're");
+                        
+                        writer.write(rightChar + " ");
                     }
                 }
                 else
