@@ -30,23 +30,81 @@ import java.util.Vector;
  */
 public class Main {
     private static String rawFilePath = "E:\\Projects\\Cogni\\NLP_ML\\raw.txt";
-    private static String trainFilePath = "E:\\Projects\\Cogni\\NLP_ML\\train.txt";
+    private static String trainFilePath = "E:\\Projects\\Cogni\\NLP_ML\\trainstar.txt";
+    private static String testFilePath = "E:\\Projects\\Cogni\\NLP_ML\\test.txt";
+    private static String resultFilePath = "E:\\Projects\\Cogni\\NLP_ML\\result.txt";
     
     
+    static ruleBook Rb = new ruleBook();
     
     public static void main(String[] args) throws IOException{
-        getTrainFile(rawFilePath, trainFilePath);
-        //get a model with this feature file
-        
-        // on the fly get feature from test file and predict, for each blank(****) and then replace acc.
+        getTrainModel(rawFilePath, trainFilePath);
+        getResultForTest(testFilePath, resultFilePath);
     }
     
-    static void getTrainFile(String inputFilePath, String outputFilePath) throws IOException{
+    static void getResultForTest(String testFile, String resultFile) throws IOException
+    {
+        File inputFile = new File(testFile);
+        BufferedReader br = new BufferedReader(new FileReader(inputFile));
+        String actualText;
+        
+        PrintWriter writer = new PrintWriter(resultFile, "UTF-8");
+        
+        while ((actualText = br.readLine()) != null) {
+            System.out.println("test : " + actualText);
+            List<List<String>> Word_POS = getWordPOS(actualText);
+            
+            for(int i = 0; i < Word_POS.get(0).size(); i++)
+            {
+                String left = "O";
+                String right = "O";
+                
+                String fillThis = Word_POS.get(0).get(i);
+                
+                if(i != Word_POS.get(0).size() - 1)
+                {
+                    if(Word_POS.get(0).get(i).equals("\\*\\*\\*\\*") && Word_POS.get(0).get(i+1).equals("\\*\\*\\*\\*"))
+                    {
+                        writer.print("you're your");
+                        i++;
+                    }
+                    continue;
+                }
+                
+                if(Word_POS.get(0).get(i).equals("\\*\\*\\*\\*"))
+                {
+                    System.out.println("Found ****");
+                    if(i != 0)
+                    {
+                        left = Word_POS.get(1).get(i-1);
+                    }
+                    if(i != Word_POS.get(1).size()-1)
+                    {
+                        right = Word_POS.get(1).get(i+1);
+                    }
+                    // break; to deal with multiple **** in one line
+                    String likelyPOS = Rb.getResult(left, right);
+                    if(likelyPOS.equals("PRP$"))
+                        fillThis = "your";
+                    else
+                        fillThis = "you're";
+                }
+                
+                if(i != 0 && !fillThis.matches("[,.;''\"\":]"));
+                    writer.print(" ");
+                
+                writer.print(fillThis);
+            }
+            writer.println();
+        }
+    }
+    
+    static void getTrainModel(String inputFilePath, String outputFilePath) throws IOException{
         File inputFile = new File(inputFilePath);
         BufferedReader br = new BufferedReader(new FileReader(inputFile));
         String actualText;
         
-        PrintWriter writer = new PrintWriter(outputFilePath, "UTF-8");
+        //PrintWriter writer = new PrintWriter(outputFilePath, "UTF-8");
         
         //int lineNum = 0;
         while ((actualText = br.readLine()) != null) {
@@ -67,7 +125,8 @@ public class Main {
                     {
                         right = Word_POS.get(1).get(i+1);
                     }
-                    writer.println(left + "\t" + right + "\t" + "PRP$");
+                    //writer.println(left + "*" + right + "*" + "PRP$");
+                    Rb.add(left, right, "PRP$");
                 }
                 else if(Word_POS.get(1).get(i).equals("PRP"))
                 {
@@ -83,14 +142,14 @@ public class Main {
                             {
                                 right = Word_POS.get(1).get(i+2);
                             }
-                            writer.println(left + "\t" + right + "\t" + "PRP_VBP");
+                            Rb.add(left, right, "PRP_VBP");
                         }
                     }
                 }
             }
         }
         br.close();
-        writer.close();
+        //writer.close();
     }
     static List<List<String>> getWordPOS(String s){
         List<List<String>> toRet = new ArrayList<List<String>>();
