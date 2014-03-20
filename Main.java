@@ -55,9 +55,10 @@ public class Main {
             
             for(int i = 0; i < words.length; i++)
             {
+                System.out.println("Word is : " + words[i]);
                 if((i != words.length - 1) && words[i].equals("\\*\\*\\*\\*"))
                 {
-                    if(words[i+1].contains("\\*\\*\\*\\*"))
+                    if(words[i+1].startsWith("****"))
                     {
                         if(i == 0)
                             writer.print("You're your");
@@ -76,47 +77,83 @@ public class Main {
                     }
                 }
                 
-                if(words[i].contains("\\*\\*\\*\\*"))
+                if(words[i].startsWith("****"))
                 {
+                    System.out.println("Found ****");
                     
+                    String leftFeature = "O";
+                    String rightFeature = "O";
+                    
+                    String leftString, rightString;
+                    
+                    if(i != 0)
+                    {
+                        leftString = words[i-1];
+                        List<List<String>> wordPos = getWordPOS(leftString);
+                        int index = wordPos.get(1).size() - 1;
+                        leftFeature = wordPos.get(1).get(index);
+                    }
+                    
+                    rightString = words[i];
+                    
+                    if(i != words.length - 1)
+                    {
+                        rightString += words[i+1];
+                    }
+                    
+                    List<List<String>> wordPos = getWordPOS(rightString);
+                    
+                    if(wordPos.get(1).size() != 1)
+                    {
+                        rightFeature = wordPos.get(1).get(1);
+                    }
+                    
+                    String likelyPOS = Rb.getResult(leftFeature, rightFeature);
+                    if(likelyPOS.equals("PRP$"))
+                    {
+                        if(words[i].length() == 4)
+                        {
+                            if(i == 0)
+                                writer.write("Your ");
+                            else
+                                writer.write("your ");
+                        }
+                        else
+                        {
+                            if(i == 0)
+                                writer.write("Your");
+                            else
+                                writer.write("your");
+                            
+                            if(wordPos.get(1).size() != 1)
+                                writer.write(wordPos.get(1).get(1)+ " ");
+                        }                           
+                    }
+                    else
+                    {
+                        if(words[i].length() == 4)
+                        {
+                            if(i == 0)
+                                writer.write("You're ");
+                            else
+                                writer.write("you're ");
+                        }
+                        else
+                        {
+                            if(i == 0)
+                                writer.write("You're");
+                            else
+                                writer.write("you're");
+                            
+                            if(wordPos.get(1).size() != 1)
+                                writer.write(wordPos.get(1).get(1)+ " ");
+                        }
+                    }
                 }
                 else
                 {
                     writer.print(words[i] + " ");
                 }
-            }
-            
-            for(int i = 0; i < Word_POS.get(0).size(); i++)
-            {
-                
-                
-                
-                if(Word_POS.get(0).get(i).equals("\\*\\*\\*\\*"))
-                {
-                    System.out.println("Found ****");
-                    if(i != 0)
-                    {
-                        left = Word_POS.get(1).get(i-1);
-                    }
-                    if(i != Word_POS.get(1).size()-1)
-                    {
-                        right = Word_POS.get(1).get(i+1);
-                    }
-
-                    System.out.println(left + "::" + right);
-                    
-                    String likelyPOS = Rb.getResult(left, right);
-                    if(likelyPOS.equals("PRP$"))
-                        fillThis = "your";
-                    else
-                        fillThis = "you're";
-                }
-                
-                if(i != 0)
-                    if(!fillThis.matches("([\\.,])"));
-                        writer.print(" ");
-                
-                writer.print(fillThis);
             }
             writer.println();
         }
