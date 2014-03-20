@@ -56,8 +56,9 @@ public class Main {
             for(int i = 0; i < words.length; i++)
             {
                 System.out.println("Word is : " + words[i]);
-                if((i != words.length - 1) && words[i].equals("\\*\\*\\*\\*"))
+                if((i != words.length - 1) && words[i].equals("****"))
                 {
+                    System.out.println("2 cont");
                     if(words[i+1].startsWith("****"))
                     {
                         if(i == 0)
