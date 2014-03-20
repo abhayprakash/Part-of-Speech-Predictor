@@ -41,10 +41,24 @@ public class ruleBook {
        
     public String getResult(String l, String r)
     {
-        int total = PRPCount.get(l).get(r).intValue() + PRPVBPCount.get(l).get(r).intValue();
+        int total = 0;
+        
+        if(PRPCount.containsKey(l))
+            if(PRPCount.get(l).containsKey(r))
+                total += PRPCount.get(l).get(r).intValue();
+        
+        if(PRPVBPCount.containsKey(l))
+            if(PRPVBPCount.get(l).containsKey(r))
+                total += PRPVBPCount.get(l).get(r).intValue();
+        
         if(total == 0)
             return getOnLeftOnly(l);
-        int prp = PRPCount.get(l).get(r).intValue();
+        
+        int prp = 0;
+        
+        if(PRPCount.containsKey(l))
+            if(PRPCount.get(l).containsKey(r))
+                prp = PRPCount.get(l).get(r).intValue();
        
         double confidencePRP = (double)prp/(double)total;
         System.out.println("Confidence : " + confidencePRP);

@@ -61,14 +61,16 @@ public class Main {
                 
                 String fillThis = Word_POS.get(0).get(i);
                 
+                System.out.println("word is : " + fillThis);
+                
                 if(i != Word_POS.get(0).size() - 1)
                 {
                     if(Word_POS.get(0).get(i).equals("\\*\\*\\*\\*") && Word_POS.get(0).get(i+1).equals("\\*\\*\\*\\*"))
                     {
                         writer.print("you're your");
                         i++;
+                        continue;
                     }
-                    continue;
                 }
                 
                 if(Word_POS.get(0).get(i).equals("\\*\\*\\*\\*"))
@@ -82,7 +84,9 @@ public class Main {
                     {
                         right = Word_POS.get(1).get(i+1);
                     }
-                    // break; to deal with multiple **** in one line
+
+                    System.out.println(left + "::" + right);
+                    
                     String likelyPOS = Rb.getResult(left, right);
                     if(likelyPOS.equals("PRP$"))
                         fillThis = "your";
@@ -97,6 +101,7 @@ public class Main {
             }
             writer.println();
         }
+        writer.close();
     }
     
     static void getTrainModel(String inputFilePath, String outputFilePath) throws IOException{
