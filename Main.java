@@ -51,27 +51,45 @@ public class Main {
         PrintWriter writer = new PrintWriter(resultFile, "UTF-8");
         
         while ((actualText = br.readLine()) != null) {
-            System.out.println("test : " + actualText);
-            List<List<String>> Word_POS = getWordPOS(actualText);
+            String[] words = actualText.split(" ");
             
-            for(int i = 0; i < Word_POS.get(0).size(); i++)
+            for(int i = 0; i < words.length; i++)
             {
-                String left = "O";
-                String right = "O";
-                
-                String fillThis = Word_POS.get(0).get(i);
-                
-                System.out.println("word is : " + fillThis);
-                
-                if(i != Word_POS.get(0).size() - 1)
+                if((i != words.length - 1) && words[i].equals("\\*\\*\\*\\*"))
                 {
-                    if(Word_POS.get(0).get(i).equals("\\*\\*\\*\\*") && Word_POS.get(0).get(i+1).equals("\\*\\*\\*\\*"))
+                    if(words[i+1].contains("\\*\\*\\*\\*"))
                     {
-                        writer.print("you're your");
+                        if(i == 0)
+                            writer.print("You're your");
+                        else
+                            writer.print("you're your");
+                        
+                        List<List<String>> wordPos = getWordPOS(words[i+1]);
+                        
+                        if(wordPos.get(0).size() != 1)
+                            writer.print(wordPos.get(0).get(1));
+                        
+                        writer.print(" ");
+                        
                         i++;
                         continue;
                     }
                 }
+                
+                if(words[i].contains("\\*\\*\\*\\*"))
+                {
+                    
+                }
+                else
+                {
+                    writer.print(words[i] + " ");
+                }
+            }
+            
+            for(int i = 0; i < Word_POS.get(0).size(); i++)
+            {
+                
+                
                 
                 if(Word_POS.get(0).get(i).equals("\\*\\*\\*\\*"))
                 {
