@@ -16,8 +16,10 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,7 @@ public class Main {
     static void getResultForTest(String testFile, String resultFile) throws IOException
     {
         File inputFile = new File(testFile);
-        BufferedReader br = new BufferedReader(new FileReader(inputFile));
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(inputFile), "UTF-8"));
         String actualText;
         
         PrintWriter writer = new PrintWriter(resultFile, "UTF-8");
