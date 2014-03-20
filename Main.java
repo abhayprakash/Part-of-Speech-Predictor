@@ -94,8 +94,9 @@ public class Main {
                         fillThis = "you're";
                 }
                 
-                if(i != 0 && !fillThis.matches("[,.;''\"\":]"));
-                    writer.print(" ");
+                if(i != 0)
+                    if(!fillThis.matches("([\\.,])"));
+                        writer.print(" ");
                 
                 writer.print(fillThis);
             }
