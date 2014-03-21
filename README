@@ -1,0 +1,3 @@
+EXTERNAL LIBRARY:
+
+Stanford core NLP library - POS tagger has been used for finding POS for each word.
