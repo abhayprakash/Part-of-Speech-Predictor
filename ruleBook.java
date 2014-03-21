@@ -7,6 +7,8 @@
 package spotlight;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *
@@ -41,25 +43,19 @@ public class ruleBook {
        
     public String getResult(String l, String r)
     {
-        int total = 0;
-        
-        if(PRPCount.containsKey(l))
-            if(PRPCount.get(l).containsKey(r))
-                total += PRPCount.get(l).get(r).intValue();
-        
-        if(PRPVBPCount.containsKey(l))
-            if(PRPVBPCount.get(l).containsKey(r))
-                total += PRPVBPCount.get(l).get(r).intValue();
-        
-        if(total == 0)
-            return getOnLeftOnly(l);
-        
-        int prp = 0;
+        int total = 0, prp = 0;
         
         if(PRPCount.containsKey(l))
             if(PRPCount.get(l).containsKey(r))
                 prp = PRPCount.get(l).get(r).intValue();
-       
+        
+        if(PRPVBPCount.containsKey(l))
+            if(PRPVBPCount.get(l).containsKey(r))
+                total = prp + PRPVBPCount.get(l).get(r).intValue();
+        
+        if(total == 0)
+            return getOnLeftOnly(l);
+        
         double confidencePRP = (double)prp/(double)total;
         System.out.println("Confidence : " + confidencePRP);
         if(confidencePRP >= 0.5)
@@ -74,6 +70,35 @@ public class ruleBook {
     
     public String getOnLeftOnly(String l)
     {
-        return "PRP$";
+        System.out.println("HERE");
+        int prp = 0, total = 0;
+        
+        Iterator it = PRPCount.get(l).entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+            prp += Integer.parseInt(pairs.getValue().toString());
+        }
+        
+        total += prp;
+        
+        it = PRPVBPCount.get(l).entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+            total += Integer.parseInt(pairs.getValue().toString());
+        }
+        
+        if(total == 0)
+            return "PRP$";
+        
+        double confidencePRP = (double)prp/(double)total;
+        System.out.println("ConfidenceL : " + confidencePRP);
+        if(confidencePRP >= 0.5)
+        {
+            return "PRP$";
+        }
+        else
+        {
+            return "PRP_VBP";
+        }
     }
 }
