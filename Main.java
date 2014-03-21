@@ -31,10 +31,10 @@ import java.util.Vector;
  * @author Abhay
  */
 public class Main {
-    private static String rawFilePath = "E:\\Projects\\Cogni\\NLP_ML\\raw.txt";
-    private static String trainFilePath = "E:\\Projects\\Cogni\\NLP_ML\\trainstar.txt";
-    private static String testFilePath = "E:\\Projects\\Cogni\\NLP_ML\\test.txt";
-    private static String resultFilePath = "E:\\Projects\\Cogni\\NLP_ML\\result.txt";
+    private static String rawFilePath = "E:\\Projects\\NewsData\\KnowledgeBase\\KnowledgeBaseCreator\\src\\dataSource\\raw.txt";
+    private static String trainFilePath = "E:\\Projects\\NewsData\\KnowledgeBase\\KnowledgeBaseCreator\\src\\dataSource\\trainRecent.txt";
+    private static String testFilePath = "E:\\Projects\\NewsData\\KnowledgeBase\\KnowledgeBaseCreator\\src\\dataSource\\test.txt";
+    private static String resultFilePath = "E:\\Projects\\NewsData\\KnowledgeBase\\KnowledgeBaseCreator\\src\\dataSource\\result.txt";
     
     static PrintWriter writerDeb;// = new PrintWriter(trainFilePath, "UTF-8");
     
@@ -143,7 +143,7 @@ public class Main {
                     String rightFeature = featureRightToThis.get(starIndex);
                     starIndex++;
                     
-                    writerDeb.println("Obtained " + leftFeature + " : " + rightFeature);
+                    //writerDeb.println("Obtained " + leftFeature + " : " + rightFeature);
                     String likelyPOS = Rb.getResult(leftFeature, rightFeature);
                     
                     /***********************************************/
@@ -200,12 +200,12 @@ public class Main {
                 {
                     if(i != 0)
                     {
-                        writerDeb.print(Word_POS.get(0).get(i-1) + " ");
+                        //writerDeb.print(Word_POS.get(0).get(i-1) + " ");
                         left = Word_POS.get(1).get(i-1);
                     }
                     if(i!=Word_POS.get(1).size()-1)
                     {
-                        writerDeb.print(Word_POS.get(0).get(i+1) + " ");
+                        //writerDeb.print(Word_POS.get(0).get(i+1) + " ");
                         
                         right = Word_POS.get(1).get(i+1);
                     }
@@ -221,12 +221,12 @@ public class Main {
                         {
                             if(i != 0)
                             {
-                                writerDeb.print(Word_POS.get(0).get(i-1) + " ");
+                                //writerDeb.print(Word_POS.get(0).get(i-1) + " ");
                                 left = Word_POS.get(1).get(i-1);
                             }
                             if(i != Word_POS.get(1).size()-2)
                             {
-                                writerDeb.print(Word_POS.get(0).get(i+2) + " ");
+                                //writerDeb.print(Word_POS.get(0).get(i+2) + " ");
                                 right = Word_POS.get(1).get(i+2);
                             }
                             

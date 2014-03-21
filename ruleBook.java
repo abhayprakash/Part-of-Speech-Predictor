@@ -43,14 +43,14 @@ public class ruleBook {
        
     public String getResult(String l, String r)
     {
-        System.out.println("came : " + l + " : " + r);
+        //System.out.println("came : " + l + " : " + r);
         int total = 0, prp = 0;
         
         if(PRPCount.containsKey(l))
             if(PRPCount.get(l).containsKey(r))
                 prp = PRPCount.get(l).get(r).intValue();
         
-        System.out.println("prp = " + prp);
+        //System.out.println("prp = " + prp);
         
         total = prp;
         
@@ -58,26 +58,28 @@ public class ruleBook {
             if(PRPVBPCount.get(l).containsKey(r))
                 total += PRPVBPCount.get(l).get(r).intValue();
         
-        System.out.println("total = " + total);
+        //System.out.println("total = " + total);
         
         if(total == 0)
             return getOnLeftOnly(l);
         
         double confidencePRP = (double)prp/(double)total;
         System.out.println("Confidence : " + confidencePRP);
-        if(confidencePRP >= 0.5)
+        if(confidencePRP >= 0.65)
         {
             return "PRP$";
         }
-        else
+        else if(confidencePRP <= 0.35)
         {
             return "PRP_VBP";
         }
+        else
+            return getOnLeftOnly(l);
     }
     
     public String getOnLeftOnly(String l)
     {
-        System.out.println("HERE");
+        //System.out.println("HERE");
         int prp = 0, total = 0;
         
         Iterator it;
