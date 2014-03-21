@@ -36,12 +36,15 @@ public class Main {
     private static String testFilePath = "E:\\Projects\\Cogni\\NLP_ML\\test.txt";
     private static String resultFilePath = "E:\\Projects\\Cogni\\NLP_ML\\result.txt";
     
+    static PrintWriter writerDeb;// = new PrintWriter(trainFilePath, "UTF-8");
     
     static ruleBook Rb = new ruleBook();
     
     public static void main(String[] args) throws IOException{
+        writerDeb = new PrintWriter(trainFilePath, "UTF-8");
         getTrainModel(rawFilePath, trainFilePath);
         getResultForTest(testFilePath, resultFilePath);
+        writerDeb.close();
     }
     
     static void getResultForTest(String testFile, String resultFile) throws IOException
@@ -140,6 +143,7 @@ public class Main {
                     String rightFeature = featureRightToThis.get(starIndex);
                     starIndex++;
                     
+                    writerDeb.println("Obtained " + leftFeature + " : " + rightFeature);
                     String likelyPOS = Rb.getResult(leftFeature, rightFeature);
                     
                     /***********************************************/
@@ -196,13 +200,17 @@ public class Main {
                 {
                     if(i != 0)
                     {
+                        writerDeb.print(Word_POS.get(0).get(i-1) + " ");
                         left = Word_POS.get(1).get(i-1);
                     }
                     if(i!=Word_POS.get(1).size()-1)
                     {
+                        writerDeb.print(Word_POS.get(0).get(i+1) + " ");
+                        
                         right = Word_POS.get(1).get(i+1);
                     }
-                    //writer.println(left + "*" + right + "*" + "PRP$");
+                    
+                    writerDeb.println(left + "\t" + right + "\t" + "PRP$");
                     Rb.add(left, right, "PRP$");
                 }
                 else if(Word_POS.get(1).get(i).equals("PRP"))
@@ -213,12 +221,16 @@ public class Main {
                         {
                             if(i != 0)
                             {
+                                writerDeb.print(Word_POS.get(0).get(i-1) + " ");
                                 left = Word_POS.get(1).get(i-1);
                             }
-                            if(i+1 != Word_POS.get(1).size()-1)
+                            if(i != Word_POS.get(1).size()-2)
                             {
+                                writerDeb.print(Word_POS.get(0).get(i+2) + " ");
                                 right = Word_POS.get(1).get(i+2);
                             }
+                            
+                            writerDeb.println(left + "\t" + right + "\t" + "PRP_VBP");
                             Rb.add(left, right, "PRP_VBP");
                         }
                     }

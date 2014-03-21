@@ -43,15 +43,22 @@ public class ruleBook {
        
     public String getResult(String l, String r)
     {
+        System.out.println("came : " + l + " : " + r);
         int total = 0, prp = 0;
         
         if(PRPCount.containsKey(l))
             if(PRPCount.get(l).containsKey(r))
                 prp = PRPCount.get(l).get(r).intValue();
         
+        System.out.println("prp = " + prp);
+        
+        total = prp;
+        
         if(PRPVBPCount.containsKey(l))
             if(PRPVBPCount.get(l).containsKey(r))
-                total = prp + PRPVBPCount.get(l).get(r).intValue();
+                total += PRPVBPCount.get(l).get(r).intValue();
+        
+        System.out.println("total = " + total);
         
         if(total == 0)
             return getOnLeftOnly(l);
@@ -73,18 +80,25 @@ public class ruleBook {
         System.out.println("HERE");
         int prp = 0, total = 0;
         
-        Iterator it = PRPCount.get(l).entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
-            prp += Integer.parseInt(pairs.getValue().toString());
+        Iterator it;
+        if(PRPCount.containsKey(l))
+        {
+            it = PRPCount.get(l).entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pairs = (Map.Entry)it.next();
+                prp += Integer.parseInt(pairs.getValue().toString());
+            }
         }
         
         total += prp;
         
-        it = PRPVBPCount.get(l).entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
-            total += Integer.parseInt(pairs.getValue().toString());
+        if(PRPVBPCount.containsKey(l))
+        {
+            it = PRPVBPCount.get(l).entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pairs = (Map.Entry)it.next();
+                total += Integer.parseInt(pairs.getValue().toString());
+            }
         }
         
         if(total == 0)
