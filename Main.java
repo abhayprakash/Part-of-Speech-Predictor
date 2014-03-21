@@ -31,10 +31,10 @@ import java.util.Vector;
  * @author Abhay
  */
 public class Main {
-    private static String rawFilePath = "E:\\Projects\\NewsData\\KnowledgeBase\\KnowledgeBaseCreator\\src\\dataSource\\raw.txt";
-    private static String trainFilePath = "E:\\Projects\\NewsData\\KnowledgeBase\\KnowledgeBaseCreator\\src\\dataSource\\trainRecent.txt";
-    private static String testFilePath = "E:\\Projects\\NewsData\\KnowledgeBase\\KnowledgeBaseCreator\\src\\dataSource\\test.txt";
-    private static String resultFilePath = "E:\\Projects\\NewsData\\KnowledgeBase\\KnowledgeBaseCreator\\src\\dataSource\\result.txt";
+    private static String rawFilePath = "E:\\Projects\\Cogni\\NLP_ML\\dataSource\\raw.txt";
+    private static String trainFilePath = "E:\\Projects\\Cogni\\NLP_ML\\dataSource\\trainRecent.txt";
+    private static String testFilePath = "E:\\Projects\\Cogni\\NLP_ML\\dataSource\\test.txt";
+    private static String resultFilePath = "E:\\Projects\\Cogni\\NLP_ML\\result.txt";
     
     //static PrintWriter writerDeb;// = new PrintWriter(trainFilePath, "UTF-8");
     
