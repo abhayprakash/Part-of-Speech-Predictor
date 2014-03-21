@@ -43,7 +43,10 @@ public class Main {
     public static void main(String[] args) throws IOException{
         //writerDeb = new PrintWriter(trainFilePath, "UTF-8");
         getTrainModel(rawFilePath, trainFilePath);
+        long startTime = System.currentTimeMillis();
         getResultForTest(testFilePath, resultFilePath);
+        long endTime = System.currentTimeMillis();
+        System.out.println("Time : " + (endTime - startTime) + " ms");
         //writerDeb.close();
     }
     
