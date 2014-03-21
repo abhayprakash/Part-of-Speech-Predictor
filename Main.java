@@ -36,15 +36,15 @@ public class Main {
     private static String testFilePath = "E:\\Projects\\NewsData\\KnowledgeBase\\KnowledgeBaseCreator\\src\\dataSource\\test.txt";
     private static String resultFilePath = "E:\\Projects\\NewsData\\KnowledgeBase\\KnowledgeBaseCreator\\src\\dataSource\\result.txt";
     
-    static PrintWriter writerDeb;// = new PrintWriter(trainFilePath, "UTF-8");
+    //static PrintWriter writerDeb;// = new PrintWriter(trainFilePath, "UTF-8");
     
     static ruleBook Rb = new ruleBook();
     
     public static void main(String[] args) throws IOException{
-        writerDeb = new PrintWriter(trainFilePath, "UTF-8");
+        //writerDeb = new PrintWriter(trainFilePath, "UTF-8");
         getTrainModel(rawFilePath, trainFilePath);
         getResultForTest(testFilePath, resultFilePath);
-        writerDeb.close();
+        //writerDeb.close();
     }
     
     static void getResultForTest(String testFile, String resultFile) throws IOException
@@ -210,7 +210,7 @@ public class Main {
                         right = Word_POS.get(1).get(i+1);
                     }
                     
-                    writerDeb.println(left + "\t" + right + "\t" + "PRP$");
+                    //writerDeb.println(left + "\t" + right + "\t" + "PRP$");
                     Rb.add(left, right, "PRP$");
                 }
                 else if(Word_POS.get(1).get(i).equals("PRP"))
@@ -230,7 +230,7 @@ public class Main {
                                 right = Word_POS.get(1).get(i+2);
                             }
                             
-                            writerDeb.println(left + "\t" + right + "\t" + "PRP_VBP");
+                            //writerDeb.println(left + "\t" + right + "\t" + "PRP_VBP");
                             Rb.add(left, right, "PRP_VBP");
                         }
                     }
