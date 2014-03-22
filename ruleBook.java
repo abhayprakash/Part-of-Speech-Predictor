@@ -26,12 +26,21 @@ public class ruleBook implements Serializable {
     HashMap<String, HashMap<String, Integer> > PRPCount = new HashMap <>();
     HashMap<String, HashMap<String, Integer> > PRPVBPCount = new HashMap <>();
     
-    public boolean store(File f) {
+    long modificationTimeOfRawFileWithWhichThisModelHasBeenCreated = 0;
+    
+    public long getTime()
+    {
+        return modificationTimeOfRawFileWithWhichThisModelHasBeenCreated;
+    }
+    
+    public boolean store(File f, long rawFileTime) {
         try {
             FileOutputStream fos = new FileOutputStream(f);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(this.PRPCount);
             oos.writeObject(this.PRPVBPCount);
+            modificationTimeOfRawFileWithWhichThisModelHasBeenCreated = rawFileTime; 
+            oos.writeObject(this.modificationTimeOfRawFileWithWhichThisModelHasBeenCreated);
             oos.close();
             fos.close();
         } catch (IOException ex) {
@@ -46,7 +55,7 @@ public class ruleBook implements Serializable {
             
             this.PRPCount =  (HashMap<String, HashMap<String, Integer>>) ois.readObject();
             this.PRPVBPCount = (HashMap<String, HashMap<String, Integer>>) ois.readObject();
-            
+            this.modificationTimeOfRawFileWithWhichThisModelHasBeenCreated = (long) ois.readObject();
             ois.close();
             fis.close();
         } catch (IOException e) {

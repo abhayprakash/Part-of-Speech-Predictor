@@ -37,8 +37,6 @@ public class Main {
     private static String resultFilePath = "E:\\Projects\\Cogni\\NLP_ML\\result.txt";
     private static String modelFilePath = "E:\\Projects\\Cogni\\NLP_ML\\dataSource\\myModel.ser";
     
-    
-    private static boolean makeNewModelEvenIfExisting = false;
     //static PrintWriter writerDeb;// = new PrintWriter(trainFilePath, "UTF-8");
     
     static ruleBook Rb = new ruleBook();
@@ -46,17 +44,28 @@ public class Main {
     public static void main(String[] args) throws IOException{
         //writerDeb = new PrintWriter(trainFilePath, "UTF-8");
         File objectFile = new File(modelFilePath);
-        if(objectFile.exists() && makeNewModelEvenIfExisting == false)
+        File rawFile = new File(rawFilePath);
+        if(!objectFile.exists())
         {
-            System.out.println("Model exists - loading . . .");
-            Rb.load(objectFile);
+            System.out.println("Training a new model");
+            getTrainModel(rawFilePath, trainFilePath);
+            Rb.store(objectFile, rawFile.lastModified());
         }
         else
         {
-            System.out.println("Training model");
-            getTrainModel(rawFilePath, trainFilePath);
-            Rb.store(objectFile); 
+            Rb.load(objectFile);
+            if(Rb.getTime() != rawFile.lastModified())
+            {
+                System.out.println("Obselete model - training fresh model with new data");
+                getTrainModel(rawFilePath, trainFilePath);
+                Rb.store(objectFile, rawFile.lastModified());
+            }
+            else
+            {
+                System.out.println("Using stored model . . .");
+            }
         }
+        
         long startTime = System.currentTimeMillis();
         getResultForTest(testFilePath, resultFilePath);
         long endTime = System.currentTimeMillis();
