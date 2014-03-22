@@ -6,6 +6,12 @@
 
 package spotlight;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,6 +25,37 @@ public class ruleBook implements Serializable {
     
     HashMap<String, HashMap<String, Integer> > PRPCount = new HashMap <>();
     HashMap<String, HashMap<String, Integer> > PRPVBPCount = new HashMap <>();
+    
+    public boolean store(File f) {
+        try {
+            FileOutputStream fos = new FileOutputStream(f);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(this.PRPCount);
+            oos.writeObject(this.PRPVBPCount);
+            oos.close();
+            fos.close();
+        } catch (IOException ex) {
+            return false;
+        }
+        return true;
+    }
+    public boolean load(File f) {
+        try {
+            FileInputStream fis = new FileInputStream(f);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            
+            this.PRPCount =  (HashMap<String, HashMap<String, Integer>>) ois.readObject();
+            this.PRPVBPCount = (HashMap<String, HashMap<String, Integer>>) ois.readObject();
+            
+            ois.close();
+            fis.close();
+        } catch (IOException e) {
+            return false;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
     
     public void add(String l, String r, String value)
     {

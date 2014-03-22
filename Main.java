@@ -35,14 +35,28 @@ public class Main {
     private static String trainFilePath = "E:\\Projects\\Cogni\\NLP_ML\\dataSource\\trainRecent.txt";
     private static String testFilePath = "E:\\Projects\\Cogni\\NLP_ML\\dataSource\\test.txt";
     private static String resultFilePath = "E:\\Projects\\Cogni\\NLP_ML\\result.txt";
+    private static String modelFilePath = "E:\\Projects\\Cogni\\NLP_ML\\dataSource\\myModel.ser";
     
+    
+    private static boolean makeNewModelEvenIfExisting = false;
     //static PrintWriter writerDeb;// = new PrintWriter(trainFilePath, "UTF-8");
     
     static ruleBook Rb = new ruleBook();
     
     public static void main(String[] args) throws IOException{
         //writerDeb = new PrintWriter(trainFilePath, "UTF-8");
-        getTrainModel(rawFilePath, trainFilePath);
+        File objectFile = new File(modelFilePath);
+        if(objectFile.exists() && makeNewModelEvenIfExisting == false)
+        {
+            System.out.println("Model exists - loading . . .");
+            Rb.load(objectFile);
+        }
+        else
+        {
+            System.out.println("Training model");
+            getTrainModel(rawFilePath, trainFilePath);
+            Rb.store(objectFile); 
+        }
         long startTime = System.currentTimeMillis();
         getResultForTest(testFilePath, resultFilePath);
         long endTime = System.currentTimeMillis();
